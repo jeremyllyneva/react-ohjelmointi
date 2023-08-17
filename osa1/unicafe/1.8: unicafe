@@ -8,27 +8,17 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
-const Statistics = ({ stats }) => {
+const Statistics = (props) => {
   return (
-    <table>
-      <tbody>
-        <Statistic stat={stats.good} />
-        <Statistic stat={stats.neutral} />
-        <Statistic stat={stats.bad} />
-        <Statistic stat={stats.total} />
-        <Statistic stat={stats.average} />
-        <Statistic stat={stats.positive} />
-      </tbody>
-    </table>
-  )
-}
+    <div>
+      <p>Good {props.good}</p>
+      <p>Neutral {props.neutral}</p>
+      <p>Bad {props.bad}</p>
+      <p>Total {props.total}</p>
+      <p>Average {props.average}</p>
+      <p>Positive {props.positive}</p>
+    </div>
 
-const Statistic = ({ stat }) => {
-  return (
-    <tr>
-      <td>{stat.text}</td>
-      <td>{stat.value}</td>
-    </tr>
   )
 }
 
@@ -40,34 +30,6 @@ const App = () => {
   const [bad, setBad] = useState(0)
   const [total, setTotal] = useState(0)
   const [average, setAverage] = useState(0)
-
-  const stats = {
-    good: {
-      text: 'Good',
-      value: good,
-    },
-    neutral: {
-      text: 'Neutral',
-      value: neutral,
-    },
-    bad: {
-      text: 'Bad',
-      value: bad,
-    },
-    total: {
-      text: 'Total',
-      value: total,
-    },
-    average: {
-      text: 'Average',
-      value: total == 0 ? 0 : average / total,
-    },
-    positive: {
-      text: 'Positive',
-      value: total == 0 ? 0: (good * 100) / total + ' %'
-    }
-  }
-
 
 
   const goodButton = () => {
@@ -91,14 +53,14 @@ const App = () => {
   }
 
   return (
-    <>
+    <div>
       <Header text={pageHeader} />
       <Button handleClick={goodButton} text='good' />
       <Button handleClick={neutralButton} text='neutral' />
       <Button handleClick={badButton} text='bad' />
       <Header text={statisticsHeader} />
-      <Statistics stats={stats} />
-    </>
+      <Statistics good={good} neutral={neutral} bad={bad} average={total == 0 ? 0 : average / total} positive={total == 0 ? 0: (good * 100) / total + ' %'} />
+    </div>
   )
 }
 
