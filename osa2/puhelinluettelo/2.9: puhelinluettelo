@@ -1,0 +1,80 @@
+import { useState } from 'react'
+
+const Person = ({ name, number }) => <p key={name}>{name} {number}</p>
+
+const People = ({ people }) => people.map(person =>
+  <Person key={person.name} name={person.name} number={person.number}
+/>)
+
+const App = () => {
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas', number: '040-123456' }
+  ])
+  const [newName, setNewName] = useState("")
+  const [newNumber, setNewNumber] = useState("")
+  const [filterPerson, setFilterPerson] = useState("")
+  const filteredNames = persons.filter(person => person.name.toLowerCase().includes(filterPerson.toLowerCase()))
+
+  const addPerson = (event) => {
+    event.preventDefault()
+
+    const personObject = {
+      name: newName,
+      number: newNumber,
+      id: persons.length + 1,
+    }
+
+    const alreadyAdded = persons.find( personAdded => {
+      return personAdded.name === personObject.name
+    })
+
+    if(alreadyAdded === undefined) {
+      setPersons(persons.concat(personObject))
+      setNewName('')
+      setNewNumber('')
+    } else {
+      alert(`${newName} is already added to phonebook`)
+    }
+  }
+
+  const handleNameChange = (event) => {
+    setNewName(event.target.value)
+  }
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
+  }
+
+  const Filter = ({ filterPerson, setFilterPerson }) =>
+    <label>
+      filter shown with: <input type="text" value={filterPerson} onChange={(event) => setFilterPerson(event.target.value)} />
+    </label>
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      <Filter filterPerson={filterPerson} setFilterPerson={setFilterPerson} />
+      <h2>add a new</h2>
+      <form onSubmit={addPerson}>
+        <div>
+          name: <input
+            value={newName}
+            onChange={handleNameChange}
+          />
+        </div>
+        <div>
+          number: <input
+            value={newNumber}
+            onChange={handleNumberChange}
+          />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+      <h2>Numbers</h2>
+      <People people={filteredNames} />
+    </div>
+  )
+}
+
+export default App
