@@ -52,9 +52,7 @@ const App = () => {
     if (confirm) {
       personService
         .deleteContact(id)
-          .then(returnedPerson => {
-            setPersons(persons.filter(person => person.id !== id))
-          })
+          .then(setPersons(persons.filter(person => person.id !== id)))
   }}
 
   const handleNameChange = (event) => {
